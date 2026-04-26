@@ -32,6 +32,7 @@ The **RT-DETR+SAM Brain MRI Tumor Detection Pipeline** is an advanced medical im
     docker-compose up --build -d
     ```
     *   **Backend API:** [http://localhost:8000](http://localhost:8000)
+    *   *Note: To enable NVIDIA GPU support, uncomment the 'deploy' section in `docker-compose.yml`.*
 
 ### 💻 Manual Installation
 If you prefer not to use Docker, follow these steps:
@@ -79,6 +80,7 @@ npm run dev
     docker-compose up --build -d
     ```
     *   **Backend API:** [http://localhost:8000](http://localhost:8000)
+    *   *Not: NVIDIA GPU desteğini aktif etmek için `docker-compose.yml` içindeki 'deploy' bölümündeki yorum satırlarını kaldırın.*
 
 ### 💻 Manuel Kurulum
 Docker kullanmak istemiyorsanız aşağıdaki adımları takip edin:
