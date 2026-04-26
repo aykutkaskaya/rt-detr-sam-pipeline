@@ -129,7 +129,7 @@ export function ScanOverlay({ className }: ScanOverlayProps) {
               <Database className="w-10 h-10 text-accent" />
             </div>
 
-            <h2 className="text-3xl font-black text-white mb-4 tracking-tighter uppercase">NeuroScan AI Suite</h2>
+            <h2 className="text-3xl font-black text-white mb-4 tracking-tighter uppercase">RT-DETR+SAM Pipeline</h2>
             <p className="text-sm text-muted leading-relaxed mb-10 max-w-md">
               The next generation of medical diagnostics. Powered by
               <span className="text-accent font-bold"> RT-DETR</span> and

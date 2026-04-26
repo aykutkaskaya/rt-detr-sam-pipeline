@@ -74,7 +74,7 @@ async def lifespan(app: FastAPI):
         torch.cuda.empty_cache()
 
 app = FastAPI(
-    title="NeuroScan SAM API",
+    title="RT-DETR+SAM Pipeline API",
     description="Advanced RT-DETR + Segment Anything (SAM) Pipeline for Medical Image Analysis. Developed by Aykut Kaşkaya (aykut@kaskaya.com)",
     version="1.0.0",
     lifespan=lifespan

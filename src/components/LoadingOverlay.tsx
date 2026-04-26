@@ -53,7 +53,7 @@ export function LoadingOverlay({ isVisible, status, error }: LoadingOverlayProps
             </motion.div>
 
             <h1 className="text-2xl font-bold mb-2 tracking-tight text-white">
-              {isError ? 'Initialization Failed' : isReady ? 'AI Engine Ready' : 'NeuroScan AI Initializing'}
+              {isError ? 'Initialization Failed' : isReady ? 'AI Engine Ready' : 'RT-DETR+SAM Pipeline Initializing'}
             </h1>
             <p className="text-sm text-muted mb-10 max-w-[280px]">
               {isError
