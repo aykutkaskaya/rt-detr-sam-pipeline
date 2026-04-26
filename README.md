@@ -37,6 +37,7 @@ The **RT-DETR+SAM Brain MRI Tumor Detection Pipeline** is an advanced medical im
 If you prefer not to use Docker, follow these steps:
 
 #### 1. Backend Setup
+*Requires Python 3.10 or higher*
 ```bash
 cd backend
 python -m venv venv
@@ -83,6 +84,7 @@ npm run dev
 Docker kullanmak istemiyorsanız aşağıdaki adımları takip edin:
 
 #### 1. Backend Kurulumu
+*Python 3.10 veya üzeri gereklidir*
 ```bash
 cd backend
 python -m venv venv
