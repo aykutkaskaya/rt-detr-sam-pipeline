@@ -5,7 +5,7 @@
 [![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![NVIDIA](https://img.shields.io/badge/NVIDIA-%2376B900.svg?style=for-the-badge&logo=nvidia&logoColor=white)](https://www.nvidia.com/)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
 ## 🇺🇸 English Version
@@ -134,4 +134,5 @@ npm run dev
 ---
 
 ## 📄 License / Lisans
-This project is developed for educational and research purposes. It should not be used as a standalone diagnostic tool for medical purposes.
+This project is developed for educational and research purposes. It should not be used as a standalone diagnostic tool for medical purposes.  
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
