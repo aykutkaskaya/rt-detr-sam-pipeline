@@ -1,0 +1,26 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Backend Temp Directories
+backend/temp_inputs/
+backend/temp_outputs/
+
+# Machine Learning Weights
+models/
+*.pt
+*.pth
+*.onnx

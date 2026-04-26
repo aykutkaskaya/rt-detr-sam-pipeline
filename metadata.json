@@ -1,0 +1,6 @@
+{
+  "name": "RT-DETR+SAM Pipeline",
+  "description": "Brain tumor detection and segmentation application.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

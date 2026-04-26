@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@1,300;1,600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a0a0f;
+  --color-surface: rgba(18, 18, 26, 0.8);
+  --color-border: #1e1e2e;
+  --color-accent: #00ff88;
+  --color-text: #e2e8f0;
+  --color-muted: #64748b;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+.glass-panel {
+  background: var(--color-surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+}
+
+.scan-container-bg {
+  background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0f 100%);
+}
+
+@keyframes runGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+    transform: scale(1);
+    background-color: rgba(0, 255, 136, 0.05);
+    border-color: rgba(0, 255, 136, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.6), inset 0 0 15px rgba(0, 255, 136, 0.2);
+    transform: scale(1.02);
+    background-color: rgba(0, 255, 136, 0.15);
+    border-color: rgba(0, 255, 136, 0.9);
+  }
+}
+
+.animate-run-glow {
+  animation: runGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes scanSlide {
+  0% { top: 0%; opacity: 0.8; }
+  50% { top: 100%; opacity: 1; }
+  100% { top: 0%; opacity: 0.8; }
+}
+
+.animate-scan-slide {
+  animation: scanSlide 3s ease-in-out infinite;
+}

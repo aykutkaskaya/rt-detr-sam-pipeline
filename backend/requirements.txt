@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+python-multipart
+torch
+torchvision
+torchaudio
+ultralytics
+segment-anything
+opencv-python
+pillow
+numpy<2.0
+pandas
+pydicom
+nibabel
+psutil
+loguru

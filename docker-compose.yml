@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: rtdetr-sam-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./assets:/app/assets
+      - ./backend/backend.log:/app/backend.log
+    environment:
+      - PORT=8000
+      - MODELS_DIR=/app/models
+      - ASSETS_DIR=/app/assets
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: always
+
+  frontend:
+    build:
+      context: .
+    container_name: rtdetr-sam-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always

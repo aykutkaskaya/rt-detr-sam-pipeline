@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Local configuration and secrets
+.env
+.env.local
+.env.*.local
+.vscode/
+.idea/
+
+# Large data/model files (mounted via volumes usually)
+models/*.pth
+models/*.onnx
+assets/
+data/
+
+# Git
+.git
+.gitignore
+
+# Docker logs
+*.log
+docker-compose.override.yml
