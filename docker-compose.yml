@@ -13,13 +13,13 @@ services:
       - PORT=8000
       - MODELS_DIR=/app/models
       - ASSETS_DIR=/app/assets
-#    deploy:
-#      resources:
-#        reservations:
-#          devices:
-#            - driver: nvidia
-#              count: all
-#              capabilities: [gpu]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     restart: always
 
   frontend:
