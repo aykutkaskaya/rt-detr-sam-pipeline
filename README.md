@@ -121,7 +121,7 @@ npm run dev
 **AYKUT KAŞKAYA**
 *   📧 **Email:** [aykut@kaskaya.com](mailto:aykut@kaskaya.com)
 *   🌐 **Website:** [www.aykutkaskaya.com](https://www.aykutkaskaya.com)
-*   🔗 **LinkedIn:** [Aykut Kaşkaya](https://tr.linkedin.com/in/aykutkaskaya)
+*   🔗 **LinkedIn:** [Aykut KAŞKAYA](https://tr.linkedin.com/in/aykutkaskaya)
 
 ---
 
