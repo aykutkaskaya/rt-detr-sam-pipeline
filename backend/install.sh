@@ -1,16 +1,25 @@
 #!/usr/bin/env bash
 
-echo "Checking NVIDIA GPU..."
+set -e
+
+echo "[INFO] Checking NVIDIA GPU..."
 
 if command -v nvidia-smi &> /dev/null
 then
-    echo "NVIDIA GPU detected. Installing CUDA version..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+    echo "[INFO] NVIDIA GPU detected"
+    TORCH_URL="https://download.pytorch.org/whl/cu128"
 else
-    echo "No NVIDIA GPU detected. Installing CPU version..."
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    echo "[INFO] No GPU detected, using CPU"
+    TORCH_URL="https://download.pytorch.org/whl/cpu"
 fi
 
+echo "[INFO] Cleaning previous torch installation..."
+pip uninstall torch torchvision torchaudio -y || true
+
+echo "[INFO] Installing PyTorch..."
+pip install torch torchvision torchaudio --index-url $TORCH_URL
+
+echo "[INFO] Installing requirements..."
 pip install -r requirements.txt
 
-echo "Installation completed."
+echo "[SUCCESS] Installation completed!"
