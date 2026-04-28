@@ -37,15 +37,56 @@ The **RT-DETR+SAM Brain MRI Tumor Detection Pipeline** is an advanced medical im
 > **🍎 macOS & Non-NVIDIA Users:** The default Docker setup is optimized for NVIDIA/CUDA. If you are on macOS or a CPU-only system, change the base image in `backend/Dockerfile` to `python:3.10-slim` and comment out the `deploy` section in `docker-compose.yml`.
 
 ### 💻 Manual Installation
-If you prefer not to use Docker, follow these steps:
+If you prefer not to use Docker, you can use the recommended installation below.
+
+#### Recommended Installation
 
 #### 1. Backend Setup
 *Requires Python 3.10 or higher*
+
+Windows:
+
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+venv\Scripts\activate
+install.bat
+```
+
+Linux / macOS:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+chmod +x install.sh
+./install.sh
+```
+These scripts automatically:
+- Detect NVIDIA GPU
+- Install correct PyTorch (CUDA or CPU)
+- Install all required Python dependencies (including requirements.txt)
+
+#### About PyTorch
+
+The installation scripts handle PyTorch setup automatically.
+
+If needed, manual installation can be performed as follows:  
+
+GPU:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+```
+CPU:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
+Verify:
+```bash
+python -c "import torch; print(torch.cuda.is_available())"
+```
+After installation, run the backend:  
+
+```bash
 uvicorn main:app --reload
 ```
 
@@ -89,13 +130,56 @@ npm run dev
 ### 💻 Manuel Kurulum
 Docker kullanmak istemiyorsanız aşağıdaki adımları takip edin:
 
+
 #### 1. Backend Kurulumu
 *Python 3.10 veya üzeri gereklidir*
+
+Windows:
+
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+venv\Scripts\activate
+install.bat
+```
+
+Linux / macOS:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+chmod +x install.sh
+./install.sh
+```
+Bu scriptler ile:
+- NVIDIA GPU olup olmadığı tespit edilecek
+- İlgili PyTorch (CUDA ya da CPU) paketi kurulacak
+- Gereksinim duyulan tüm Python bağımlılıkları yüklenir (requirements.txt dâhil)  
+
+#### PyTorch Hakkında
+
+Scriptler PyTorch kurulumunu otomatik olarak tamamlayacaktır.
+
+Ancak gerekmesi halinde manual kurulum için:
+
+GPU:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+```
+
+CPU:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
+
+Aşağıdaki komut ile PyTorch kurulumunu doğrulayın:
+```bash
+python -c "import torch; print(torch.cuda.is_available())"
+```
+
+PyTorch kurulumu tamamlandıktan sonra backendi çalıştırmak için;
+
+```bash
 uvicorn main:app --reload
 ```
 
