@@ -42,9 +42,12 @@ async def lifespan(app: FastAPI):
             log.info("Starting background model loading...")
             ensure_weights_exist()
             
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-            if device == "cuda":
-                torch.cuda.empty_cache()
+            if torch.cuda.is_available():
+                device = "CUDA"
+            elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                device = "MPS"
+            else:
+                device = "CPU"
             
             log.info(f"Loading DETR+SAM on {device}...")
             pipeline = DETRSAMPipeline(
