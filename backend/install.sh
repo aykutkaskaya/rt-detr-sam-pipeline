@@ -1,25 +1,26 @@
 #!/usr/bin/env bash
-
 set -e
 
-echo "[INFO] Checking NVIDIA GPU..."
+python -m pip install --upgrade pip
 
-if command -v nvidia-smi &> /dev/null
-then
-    echo "[INFO] NVIDIA GPU detected"
-    TORCH_URL="https://download.pytorch.org/whl/cu128"
+OS="$(uname -s)"
+
+if [[ "$OS" == "Darwin" ]]; then
+    echo "[INFO] macOS detected. Installing PyTorch with MPS support..."
+    python -m pip uninstall torch torchvision torchaudio -y || true
+    python -m pip install torch torchvision torchaudio
+
+elif command -v nvidia-smi &> /dev/null; then
+    echo "[INFO] NVIDIA GPU detected. Installing CUDA PyTorch..."
+    python -m pip uninstall torch torchvision torchaudio -y || true
+    python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+
 else
-    echo "[INFO] No GPU detected, using CPU"
-    TORCH_URL="https://download.pytorch.org/whl/cpu"
+    echo "[INFO] No NVIDIA GPU detected. Installing CPU PyTorch..."
+    python -m pip uninstall torch torchvision torchaudio -y || true
+    python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 fi
 
-echo "[INFO] Cleaning previous torch installation..."
-pip uninstall torch torchvision torchaudio -y || true
+python -m pip install -r requirements.txt
 
-echo "[INFO] Installing PyTorch..."
-pip install torch torchvision torchaudio --index-url $TORCH_URL
-
-echo "[INFO] Installing requirements..."
-pip install -r requirements.txt
-
-echo "[SUCCESS] Installation completed!"
+echo "[SUCCESS] Installation completed."
