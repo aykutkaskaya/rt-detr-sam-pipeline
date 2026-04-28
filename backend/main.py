@@ -143,7 +143,13 @@ async def health_check(request: Request):
     pipeline_loaded = hasattr(request.app.state, "pipeline") and request.app.state.pipeline is not None
     models_loading = getattr(request.app.state, "models_loading", False)
     models_error = getattr(request.app.state, "models_error", None)
-    device = "CUDA" if torch.cuda.is_available() else "CPU"
+    if torch.cuda.is_available():
+        device = "cuda"
+        torch.cuda.empty_cache()
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        device = "mps"
+    else:
+        device = "cpu"
     
     ram_gb = round(psutil.virtual_memory().total / (1024 ** 3), 1)
     
