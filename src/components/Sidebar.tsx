@@ -117,13 +117,22 @@ export function Sidebar() {
                 >
                   <Cpu className="w-3 h-3" /> CPU
                 </button>
-                {systemInfo?.device === 'CUDA' && (
+                {(systemInfo?.device?.toLowerCase() === 'cuda') && (
                   <button
                     onClick={() => !disabled && setComputeDevice('cuda')}
                     disabled={disabled}
                     className={cn("text-[9px] px-2 py-1 font-mono font-semibold uppercase transition-all rounded-sm flex items-center gap-1", computeDevice === 'cuda' ? "bg-[#00ff88]/20 text-[#00ff88]" : "text-muted hover:text-white disabled:opacity-50")}
                   >
-                    <Zap className="w-3 h-3" /> GPU
+                    <Zap className="w-3 h-3" /> CUDA
+                  </button>
+                )}
+                {(systemInfo?.device?.toLowerCase() === 'mps') && (
+                  <button
+                    onClick={() => !disabled && setComputeDevice('mps')}
+                    disabled={disabled}
+                    className={cn("text-[9px] px-2 py-1 font-mono font-semibold uppercase transition-all rounded-sm flex items-center gap-1", computeDevice === 'mps' ? "bg-[#ff8800]/20 text-[#ff8800]" : "text-muted hover:text-white disabled:opacity-50")}
+                  >
+                    <Zap className="w-3 h-3" /> MPS
                   </button>
                 )}
               </div>
@@ -131,14 +140,14 @@ export function Sidebar() {
 
             <div className="flex items-center gap-3 bg-[#12121a]/50 p-2.5 rounded border border-border/50">
               <div className="flex-1 min-w-0">
-                <p className="text-[11px] font-mono text-white/90 truncate whitespace-nowrap" title={computeDevice === 'cpu' || (computeDevice === 'auto' && systemInfo?.device !== 'CUDA') ? systemInfo?.cpu : systemInfo?.gpu}>
-                  {computeDevice === 'cpu' || (computeDevice === 'auto' && systemInfo?.device !== 'CUDA')
+                <p className="text-[11px] font-mono text-white/90 truncate whitespace-nowrap" title={computeDevice === 'cpu' || (computeDevice === 'auto' && (systemInfo?.device?.toLowerCase() !== 'cuda' && systemInfo?.device?.toLowerCase() !== 'mps')) ? systemInfo?.cpu : systemInfo?.gpu}>
+                  {computeDevice === 'cpu' || (computeDevice === 'auto' && (systemInfo?.device?.toLowerCase() !== 'cuda' && systemInfo?.device?.toLowerCase() !== 'mps'))
                     ? systemInfo?.cpu
-                    : (systemInfo?.gpu !== 'N/A' ? systemInfo?.gpu : 'Unknown GPU')}
+                    : (systemInfo?.gpu !== 'N/A' ? systemInfo?.gpu : 'Unknown Accelerator')}
                 </p>
                 <p className="text-[9px] text-muted font-mono mt-0.5 uppercase tracking-widest">Active Hardware</p>
               </div>
-              {!(computeDevice === 'cpu' || (computeDevice === 'auto' && systemInfo?.device !== 'CUDA')) && systemInfo?.vram && systemInfo?.vram !== 'N/A' && (
+              {!(computeDevice === 'cpu' || (computeDevice === 'auto' && (systemInfo?.device?.toLowerCase() !== 'cuda' && systemInfo?.device?.toLowerCase() !== 'mps'))) && systemInfo?.vram && systemInfo?.vram !== 'N/A' && (
                 <div className="shrink-0 text-right border-l border-[#1e1e2e] pl-3">
                   <p className="text-[11px] font-mono text-accent whitespace-nowrap">{systemInfo?.vram}</p>
                   <p className="text-[9px] text-muted font-mono mt-0.5 uppercase tracking-widest">vRAM</p>
