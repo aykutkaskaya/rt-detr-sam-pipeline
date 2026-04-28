@@ -14,7 +14,7 @@ interface AppState {
   health: HealthResponse | null;
 
   // Config State
-  computeDevice: 'auto' | 'cpu' | 'cuda';
+  computeDevice: 'auto' | 'cpu' | 'cuda' | 'mps';
   confThreshold: number;
   detrWeightPath: string;
   samWeightPath: string;
@@ -42,7 +42,7 @@ interface AppState {
   setError: (error: string | null) => void;
   setHealth: (health: HealthResponse | null) => void;
 
-  setComputeDevice: (device: 'auto' | 'cpu' | 'cuda') => void;
+  setComputeDevice: (device: 'auto' | 'cpu' | 'cuda' | 'mps') => void;
   setConfThreshold: (threshold: number) => void;
   setDetrWeightPath: (path: string) => void;
   setSamWeightPath: (path: string) => void;
@@ -159,11 +159,16 @@ export const useAppStore = create<AppState>((set, get) => ({
       const data = await checkHealth();
       set({ health: data });
       
-      if (data.device === 'CUDA') {
+      const normalizedDevice = data.device?.toLowerCase();
+      if (normalizedDevice === 'cuda') {
         set({ computeDevice: 'cuda' });
-        // Only log once to avoid spam during polling
         if (!get().logs.some(l => l.includes('CUDA detected'))) {
           get().addLog('🚀 CUDA detected! GPU acceleration enabled.');
+        }
+      } else if (normalizedDevice === 'mps') {
+        set({ computeDevice: 'mps' });
+        if (!get().logs.some(l => l.includes('MPS detected'))) {
+          get().addLog('🚀 Apple Silicon GPU (MPS) detected! Acceleration enabled.');
         }
       } else {
         set({ computeDevice: 'cpu' });
