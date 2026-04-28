@@ -44,7 +44,7 @@ export interface AnalyzeRequestParams {
   image: File;
   conf_threshold?: number;
   slice_index?: number;
-  compute_device?: 'auto' | 'cpu' | 'cuda';
+  compute_device?: 'auto' | 'cpu' | 'cuda' | 'mps';
   window_center?: number;
   window_width?: number;
   detr_weight_path?: string;
@@ -55,5 +55,5 @@ export interface AnalyzePointRequestParams {
   image: Blob;
   points: number[][];
   labels: number[];
-  compute_device?: 'auto' | 'cpu' | 'cuda';
+  compute_device?: 'auto' | 'cpu' | 'cuda' | 'mps';
 }
