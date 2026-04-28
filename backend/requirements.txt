@@ -1,9 +1,6 @@
 fastapi
 uvicorn[standard]
 python-multipart
-torch
-torchvision
-torchaudio
 ultralytics
 segment-anything
 opencv-python
