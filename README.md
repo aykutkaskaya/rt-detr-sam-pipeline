@@ -90,6 +90,9 @@ After installation, run the backend:
 uvicorn main:app --reload
 ```
 
+[!IMPORTANT]
+🤖 Model Download Approval: When starting the backend for the first time, a prompt will appear asking for permission to download the required model weights from Hugging Face. You must type y/n to proceed with the initialization.
+
 #### 2. Frontend Setup
 ```bash
 # In the root directory
@@ -182,6 +185,9 @@ PyTorch kurulumu tamamlandıktan sonra backendi çalıştırmak için;
 ```bash
 uvicorn main:app --reload
 ```
+
+[!IMPORTANT]
+🤖 Model İndirme Onayı: Backend servisini başlattığınızda, gerekli model ağırlıklarının Hugging Face üzerinden indirilmesi için bir evet/hayır (y/n) onay penceresi çıkacaktır. Kurulumun tamamlanması için bu komut satırı istemine onay vermeniz gerekmektedir.
 
 #### 2. Frontend Kurulumu
 ```bash
