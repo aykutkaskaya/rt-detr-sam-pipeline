@@ -24,3 +24,6 @@ models/
 *.pt
 *.pth
 *.onnx
+architecture.png
+architecture.mmd
+docs/paper.docx

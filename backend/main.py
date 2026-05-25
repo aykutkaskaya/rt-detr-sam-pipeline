@@ -82,7 +82,8 @@ app = FastAPI(
     title="RT-DETR+SAM Pipeline API",
     description="Advanced RT-DETR + Segment Anything (SAM) Pipeline for Medical Image Analysis. Developed by Aykut Kaşkaya (aykut@kaskaya.com)",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    redoc_url=None
 )
 
 app.add_middleware(
@@ -194,6 +195,228 @@ async def health_check(request: Request):
             "vram_gb": vram_gb
         }
     }
+
+@app.get("/redoc", include_in_schema=False)
+async def custom_redoc_html():
+    from fastapi.responses import HTMLResponse
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <title>🧠 RT-DETR+SAM Pipeline API Docs</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+          }
+          
+          /* Custom Premium Light Sticky Header */
+          .api-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            color: #0f172a;
+          }
+          
+          .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.15rem;
+            letter-spacing: -0.02em;
+          }
+          
+          .header-brand span.badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-weight: 500;
+          }
+          
+          .header-links a {
+            color: #475569;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            font-weight: 500;
+          }
+          
+          .header-links a:hover {
+            color: #10b981;
+          }
+          
+          #redoc-container {
+            margin-top: 0px;
+          }
+          
+          .menu-content {
+            border-right: 1px solid #e2e8f0 !important;
+          }
+          
+          /* Custom light scrollbars */
+          ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+          }
+          ::-webkit-scrollbar-track {
+            background: #ffffff;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="api-header">
+          <div class="header-brand">
+            <span>🧠</span> RT-DETR+SAM Pipeline API Docs <span class="badge">v1.0.0</span>
+          </div>
+          <div class="header-links">
+            <a href="https://github.com/aykutkaskaya/rt-detr-sam-pipeline" target="_blank">View GitHub Repository →</a>
+          </div>
+        </div>
+        
+        <div id="redoc-container"></div>
+        
+        <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+        <script>
+          const theme = {
+            spacing: {
+              unit: 8,
+              sectionHorizontal: 40,
+              sectionVertical: 45
+            },
+            breakpoints: {
+              small: '50rem',
+              medium: '75rem',
+              large: '105rem'
+            },
+            colors: {
+              tonalOffset: 0.2,
+              primary: {
+                main: '#10b981', // Emerald
+                light: '#34d399',
+                dark: '#059669',
+                contrastText: '#ffffff'
+              },
+              success: {
+                main: '#10b981',
+                light: '#e6f4ea',
+                contrastText: '#137333'
+              },
+              warning: {
+                main: '#f59e0b',
+                light: '#fef3c7',
+                contrastText: '#b45309'
+              },
+              error: {
+                main: '#ef4444',
+                light: '#fee2e2',
+                contrastText: '#b91c1c'
+              },
+              text: {
+                primary: '#0f172a', // Slate 900
+                secondary: '#475569' // Slate 600
+              },
+              border: {
+                light: '#e2e8f0', // Slate 200
+                dark: '#cbd5e1'   // Slate 300
+              },
+              responses: {
+                success: {
+                  color: '#10b981',
+                  backgroundColor: 'rgba(16, 185, 129, 0.05)',
+                  tabTextColor: '#10b981'
+                },
+                error: {
+                  color: '#ef4444',
+                  backgroundColor: 'rgba(239, 68, 68, 0.05)',
+                  tabTextColor: '#ef4444'
+                }
+              },
+              http: {
+                get: '#2563eb',
+                post: '#10b981',
+                put: '#d97706',
+                delete: '#dc2626'
+              }
+            },
+            typography: {
+              fontSize: '14px',
+              lineHeight: '1.6em',
+              fontFamily: '"Outfit", sans-serif',
+              headings: {
+                fontFamily: '"Outfit", sans-serif',
+                fontWeight: '600',
+                lineHeight: '1.4em'
+              },
+              code: {
+                fontSize: '13px',
+                fontFamily: '"Fira Code", monospace',
+                wrap: true,
+                backgroundColor: '#f1f5f9',
+                color: '#0f172a'
+              }
+            },
+            sidebar: {
+              width: '280px',
+              backgroundColor: '#f8fafc', // Soft gray-blue background
+              textColor: '#475569',
+              activeTextColor: '#10b981',
+              groupItems: {
+                textTransform: 'uppercase'
+              },
+              level1Items: {
+                textTransform: 'none'
+              },
+              arrow: {
+                size: '1.5em',
+                color: '#94a3b8'
+              }
+            },
+            rightPanel: {
+              backgroundColor: '#0f172a', // Clean dark code blocks side (Standard premium contrast)
+              width: '40%',
+              textColor: '#f8fafc'
+            }
+          };
+
+          Redoc.init('/openapi.json', {
+            theme: theme,
+            expandResponses: '200,201',
+            hideDownloadButton: false,
+            pathInMiddlePanel: true,
+            requiredPropsFirst: true,
+            sortPropsAlphabetically: false,
+            hideLoading: true
+          }, document.getElementById('redoc-container'));
+        </script>
+      </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))

@@ -14,6 +14,76 @@ log = get_logger("analyze_router")
 
 router = APIRouter()
 
+from pydantic import BaseModel, Field
+from typing import List, Dict, Optional
+
+class WindowingResponse(BaseModel):
+    base_url: Optional[str] = Field(None, description="Base64-encoded Data URL of the extracted and windowed 2D slice.")
+    slice_index: int = Field(..., description="The index of the axial slice that was extracted.")
+    total_slices: int = Field(..., description="The total number of slices in the input medical volume.")
+
+class DetectionMetadata(BaseModel):
+    index: int = Field(..., description="Index of the detected instance.")
+    area_px: int = Field(..., description="Absolute pixel area of the segmented mask.")
+    width_px: int = Field(..., description="Width of the bounding box in pixels.")
+    height_px: int = Field(..., description="Height of the bounding box in pixels.")
+    bbox: List[float] = Field(..., description="Bounding box coordinates in [x_min, y_min, x_max, y_max] format.")
+    confidence: float = Field(..., description="Object detection confidence score (0.0 to 1.0).")
+    mask_path: str = Field(..., description="Disk path of the generated binary mask file.")
+
+class SystemStatus(BaseModel):
+    status: str = Field(..., description="Status of the request (e.g. 'success').")
+    request_id: str = Field(..., description="Unique UUID tracking identifier of the request.")
+    execution_time_ms: int = Field(..., description="Total execution time in milliseconds.")
+    cuda_available: bool = Field(..., description="Whether NVIDIA CUDA acceleration was available.")
+    device: str = Field(..., description="The hardware device used for execution.")
+
+class ParameterInfo(BaseModel):
+    conf_threshold: float = Field(..., description="Confidence threshold used for detection.")
+    model_type: str = Field(..., description="The specific Segment Anything Model type utilized.")
+
+class VolumeInfo(BaseModel):
+    total_slices: int = Field(..., description="Total slices parsed in the medical volume.")
+    active_slice: int = Field(..., description="The specific slice index that was analyzed.")
+    is_medical_volume: bool = Field(..., description="Whether the uploaded file was a 3D medical volume.")
+
+class RawDetectionInfo(BaseModel):
+    boxes: List[List[float]] = Field(..., description="List of raw bounding box coordinate arrays.")
+    scores: List[float] = Field(..., description="List of raw confidence scores.")
+    classes: List[int] = Field(..., description="List of raw class category IDs.")
+
+class InferenceJSONOutput(BaseModel):
+    system_status: SystemStatus = Field(..., description="Hardware and execution statistics.")
+    parameters: ParameterInfo = Field(..., description="Runtime parameter configuration.")
+    volume_info: VolumeInfo = Field(..., description="Volume and slice ingestion details.")
+    raw_detections: RawDetectionInfo = Field(..., description="Unmodified RT-DETR prediction matrices.")
+
+class AnalyzeResponse(BaseModel):
+    base_url: Optional[str] = Field(None, description="Base64-encoded Data URL of the raw contrast-adjusted slice.")
+    overlay_url: Optional[str] = Field(None, description="Base64-encoded Data URL of the composite visual overlay (slice + bboxes + semi-transparent masks).")
+    mask_urls: List[str] = Field(..., description="List of Base64-encoded Data URLs for each individual binary mask.")
+    metadata: List[DetectionMetadata] = Field(..., description="List of quantitative segmentations and coordinates per tumor instance.")
+    json_output: InferenceJSONOutput = Field(..., description="Comprehensive system telemetry, runtime parameters, and raw model matrices.")
+
+class InteractiveSAMDetails(BaseModel):
+    index: int = Field(..., description="Index of the point-prompted segment.")
+    type: str = Field(..., description="Type of prompting used (e.g., 'manual_segmentation').")
+    area_px: int = Field(..., description="Absolute pixel area of the mask.")
+    bbox: List[float] = Field(..., description="Bounding box containing the mask.")
+    mask_path: str = Field(..., description="Disk path of the saved binary mask.")
+
+class InteractiveJSONOutput(BaseModel):
+    sam_info: List[InteractiveSAMDetails] = Field(..., description="Specific details of each guidance step.")
+    system_status: Dict = Field(..., description="Telemetry and execution status information.")
+
+class AnalyzePointResponse(BaseModel):
+    base_url: Optional[str] = Field(None, description="Base64-encoded Data URL of the input image.")
+    overlay_url: Optional[str] = Field(None, description="Base64-encoded Data URL of the interactive composite visual overlay.")
+    mask_urls: List[str] = Field(..., description="List of Base64-encoded Data URLs of the point-guided masks.")
+    metadata: List[Dict] = Field(..., description="Unused list placeholder for API consistency.")
+    sam_details: List[InteractiveSAMDetails] = Field(..., description="Quantitative segmentation parameters per manual point.")
+    json_output: InteractiveJSONOutput = Field(..., description="System status and SAM execution parameters.")
+
 def file_to_base64_url(file_path: str) -> str:
     """Helper to read image from disk and serialize to base64 Data URL"""
     try:
@@ -25,7 +95,7 @@ def file_to_base64_url(file_path: str) -> str:
         log.error(f"Error converting {file_path} to base64: {e}")
         return None
 
-@router.post("/windowing")
+@router.post("/windowing", response_model=WindowingResponse)
 async def apply_windowing(
     image: UploadFile = File(...),
     slice_index: int = Form(None),
@@ -70,7 +140,7 @@ async def apply_windowing(
         log.error(f"Error in /windowing: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/analyze")
+@router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_image(
     request: Request,
     image: UploadFile = File(...),
@@ -200,7 +270,7 @@ async def analyze_image(
         except Exception as cleanup_err:
             log.error(f"Failed to cleanup temp files for request {req_id}: {cleanup_err}")
 
-@router.post("/analyze/point")
+@router.post("/analyze/point", response_model=AnalyzePointResponse)
 async def analyze_point(
     request: Request,
     image: UploadFile = File(...),
