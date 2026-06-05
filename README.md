@@ -36,13 +36,26 @@ The **RT-DETR+SAM Brain MRI Tumor Detection Pipeline** is an advanced medical im
 > [!TIP]
 > **🍎 macOS & Non-NVIDIA Users:** The default Docker setup is optimized for NVIDIA/CUDA. If you are on macOS or a CPU-only system, change the base image in `backend/Dockerfile` to `python:3.10-slim` and comment out the `deploy` section in `docker-compose.yml`.
 
+### 📋 System Requirements / Sistem Gereksinimleri
+
+| Component | Tested Version | Recommended Version |
+| :--- | :--- | :--- |
+| **Python** | 3.14.4 | 3.10–3.14 |
+| **PyTorch** | 2.11.0 | 2.11.0 or compatible stable release |
+| **Node.js** | 24.16.0 | 24 LTS |
+| **Package Manager** | pip / npm | pip / npm |
+| **Backend Framework** | FastAPI | FastAPI-compatible Python environment |
+| **Frontend Runtime** | Node.js | Node.js LTS |
+
+---
+
 ### 💻 Manual Installation
 If you prefer not to use Docker, you can use the recommended installation below.
 
 #### Recommended Installation
 
 #### 1. Backend Setup
-*Requires Python 3.10 or higher*
+*Requires Python 3.10–3.14*
 
 Windows:
 
@@ -135,7 +148,7 @@ Docker kullanmak istemiyorsanız aşağıdaki adımları takip edin:
 
 
 #### 1. Backend Kurulumu
-*Python 3.10 veya üzeri gereklidir*
+*Python 3.10–3.14 gereklidir*
 
 Windows:
 

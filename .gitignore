@@ -27,3 +27,12 @@ models/
 architecture.png
 architecture.mmd
 docs/paper.docx
+
+
+backend/dataset
+backend/evaluation_results
+
+scripts/evaluate_dataset.py
+scripts/test_thresholds.py
+
+evaluation_guide.md
